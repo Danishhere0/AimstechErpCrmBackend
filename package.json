@@ -6,13 +6,15 @@
     "node": "20.9.0"
   },
   "scripts": {
-    "start": "node src/server.js",
+    "oldStart": "node src/server.js",
     "dev": "nodemon src/server.js --ignore public/",
     "production": "NODE_ENV=production",
     "translate": "node src/aiTranslate/index.js",
     "features": "node src/aiFeatures/index.js",
     "setup": "node src/setup/setup.js",
-    "reset": "node src/setup/reset.js"
+    "reset": "node src/setup/reset.js",
+    "build": "./node_modules/.bin/netify-lambda build src",
+    "start": "./node_modules/.bin/netify-lambda serve src"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -33,10 +35,12 @@
     "mongoose": "^8.0.3",
     "mongoose-autopopulate": "^1.1.0",
     "multer": "^1.4.4",
+    "netlify-lambda": "^2.0.16",
     "node-cache": "^5.1.2",
     "openai": "^4.22.0",
     "pug": "^3.0.2",
     "resend": "^2.0.0",
+    "serverless-http": "^3.2.0",
     "shortid": "^2.2.16",
     "transliteration": "^2.3.5"
   },

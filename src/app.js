@@ -5,6 +5,10 @@ const compression = require('compression');
 // const NodeCache = require('node-cache');
 const cookieParser = require('cookie-parser');
 
+const serverless = require('serverless-http');
+
+const router = express.Router();
+
 const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
 const coreApiRouter = require('./routes/coreRoutes/coreApi');
 const coreDownloadRouter = require('./routes/coreRoutes/coreDownloadRouter');
@@ -82,4 +86,5 @@ app.use(errorHandlers.notFound);
 app.use(errorHandlers.productionErrors);
 
 // done! we export it so we can start the site in start.js
+app.use('/.netlify/function/app', router);
 module.exports = app;
