@@ -87,4 +87,6 @@ app.use(errorHandlers.productionErrors);
 
 // done! we export it so we can start the site in start.js
 // app.use('/.netlify/function/app', router);
+// module.exports.handler = serverless(app);
+
 module.exports = app;

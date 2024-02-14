@@ -1,21 +1,18 @@
 {
   "name": "idurar-erp-crm",
   "version": "3.1.1",
-
   "engines": {
     "npm": "10.2.4",
     "node": "20.9.0"
   },
   "scripts": {
-    "oldStart": "node src/server.js",
+    "start": "node src/server.js",
     "dev": "nodemon src/server.js --ignore public/",
     "production": "NODE_ENV=production",
     "translate": "node src/aiTranslate/index.js",
     "features": "node src/aiFeatures/index.js",
     "setup": "node src/setup/setup.js",
-    "reset": "node src/setup/reset.js",
-    "build": "./node_modules/.bin/netify-lambda build src",
-    "start": "./node_modules/.bin/netify-lambda serve src"
+    "reset": "node src/setup/reset.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
