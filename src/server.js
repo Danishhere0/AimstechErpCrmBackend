@@ -1,7 +1,12 @@
+const express = require('express');
 require('module-alias/register');
 const mongoose = require('mongoose');
 const { globSync } = require('glob');
 const path = require('path');
+
+const serverless = require('serverless-http');
+
+const router = express.Router();
 
 // Make sure we are running node 7.6+
 const [major, minor] = process.versions.node.split('.').map(parseFloat);
@@ -37,3 +42,6 @@ app.set('port', process.env.PORT || 8888);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express running → On PORT : ${server.address().port}`);
 });
+
+app.use('/.netlify/function/app', router);
+module.exports.handler = serverless(app);
