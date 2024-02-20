@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 
 // const serverless = require('serverless-http');
 
-// const router = express.Router();
+const router = express.Router();
 
 const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
 const coreApiRouter = require('./routes/coreRoutes/coreApi');
@@ -86,7 +86,8 @@ app.use(errorHandlers.notFound);
 app.use(errorHandlers.productionErrors);
 
 // done! we export it so we can start the site in start.js
-// app.use('/.netlify/function/app', router);
 // module.exports.handler = serverless(app);
-
+app.get('/', (req, res) => {
+  res.send('Hello, this is your Node.js API!');
+});
 module.exports = app;
