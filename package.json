@@ -1,5 +1,5 @@
 {
-  "name": "idurar-erp-crm",
+  "name": "aimstech-erp-crm",
   "version": "3.1.1",
   "engines": {
     "npm": "10.2.4",
@@ -49,15 +49,6 @@
     "@": "src"
   },
   "main": "server.js",
-  "author": "IDURAR",
-  "email": "hello@idurarapp.com",
-  "license": "Fair-code License",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/idurar/idurar-erp-crm/.git"
-  },
-  "bugs": {
-    "url": "https://github.com/idurar/idurar-erp-crm//issues"
-  },
-  "homepage": "https://github.com/idurar/idurar-erp-crm/#readme"
+  "author": "AIMSTECH",
+  "email": "danishhere0@gmail.com"
 }
