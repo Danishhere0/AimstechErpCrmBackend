@@ -95,7 +95,7 @@ const login = async (req, res, { userModel }) => {
       maxAge: req.body.remember ? 365 * 24 * 60 * 60 * 1000 : null,
       sameSite: 'Lax',
       httpOnly: true,
-      secure: false,
+      secure: true,
       domain: req.hostname,
       path: '/',
       Partitioned: true,
