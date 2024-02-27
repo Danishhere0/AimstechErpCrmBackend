@@ -52,7 +52,7 @@ const login = async (req, res, { userModel }) => {
       result: null,
       message: 'Invalid credentials.',
     });
-  console.log("1",user);
+  console.log('1', user);
 
   if (!user.enabled) {
     const settings = await loadSettings();
@@ -94,7 +94,7 @@ const login = async (req, res, { userModel }) => {
     .cookie('token', token, {
       maxAge: req.body.remember ? 365 * 24 * 60 * 60 * 1000 : null,
       sameSite: 'Lax',
-      httpOnly: true,
+      // httpOnly: true,
       secure: false,
       domain: req.hostname,
       path: '/',
