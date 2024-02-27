@@ -91,7 +91,15 @@ const login = async (req, res, { userModel }) => {
 
   res
     .status(200)
-    .cookie('token', token)
+    .cookie('token', token, {
+      maxAge: req.body.remember ? 365 * 24 * 60 * 60 * 1000 : null,
+      sameSite: 'Lax',
+      httpOnly: true,
+      secure: false,
+      domain: req.hostname,
+      path: '/',
+      Partitioned: true,
+    })
     .json({
       success: true,
       result: {
