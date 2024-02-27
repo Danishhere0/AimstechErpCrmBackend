@@ -96,7 +96,7 @@ const login = async (req, res, { userModel }) => {
       sameSite: 'Lax',
       // httpOnly: true,
       secure: false,
-      domain: req.hostname,
+      // domain: req.hostname,
       path: '/',
       Partitioned: true,
     })
