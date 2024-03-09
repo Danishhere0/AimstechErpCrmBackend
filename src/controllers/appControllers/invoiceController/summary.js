@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 
 const Model = mongoose.model('Invoice');
+const { ObjectId } = require('mongodb');
 
 const summary = async (req, res) => {
   let defaultType = 'month';
-  
+
   const { type, id } = req.query;
-console.log('iddd', id);
+  const supplier = id ? new ObjectId(id) : null;
+
   if (type) {
     if (['week', 'month', 'year'].includes(type)) {
       defaultType = type;
@@ -31,7 +33,7 @@ console.log('iddd', id);
       $match: {
         removed: false,
         type: 'purchase',
-        supplier:id,
+        ...(supplier ? { supplier } : {}),
         // date: {
         //   $gte: startDate.toDate(),
         //   $lte: endDate.toDate(),
@@ -128,7 +130,7 @@ console.log('iddd', id);
   const statusResult = response[0].statusCounts || [];
   const paymentStatusResult = response[0].paymentStatusCounts || [];
   const overdueResult = response[0].overdueCounts || [];
-
+  console.log('totalInvoices', totalInvoices);
   const statusResultMap = statusResult.map((item) => {
     return {
       ...item,
@@ -165,6 +167,7 @@ console.log('iddd', id);
       $match: {
         removed: false,
         type: 'purchase',
+        ...(supplier ? { supplier } : {}),
         // date: {
         //   $gte: startDate.toDate(),
         //   $lte: endDate.toDate(),

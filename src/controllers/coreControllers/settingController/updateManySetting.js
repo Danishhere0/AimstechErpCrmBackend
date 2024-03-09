@@ -39,7 +39,6 @@ const updateManySetting = async (req, res) => {
     });
   }
   const result = await Model.bulkWrite(updateDataArray);
-
   if (!result || result.nMatched < 1) {
     return res.status(404).json({
       success: false,
@@ -49,7 +48,7 @@ const updateManySetting = async (req, res) => {
   } else {
     return res.status(200).json({
       success: true,
-      result: [],
+      result:[],
       message: 'we update all settings',
     });
   }

@@ -10,7 +10,7 @@ const pugFiles = ['invoice', 'offer', 'quote', 'payment'];
 
 exports.generatePdf = async (
   modelName,
-  info = { filename: 'pdf_file', format: 'A5', targetLocation: '' },
+  info = { filename: 'pdf_file', format: 'A4', targetLocation: '' },
   result,
   callback
 ) => {
@@ -51,9 +51,7 @@ exports.generatePdf = async (
         moment: moment,
       });
 
-      pdf
-        .create(htmlContent, {
-          format: info.format,
+      pdf.create(htmlContent, {          format: info.format,
           orientation: 'portrait',
           border: '10mm',
         })

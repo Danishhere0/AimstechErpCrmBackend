@@ -54,24 +54,24 @@ const login = async (req, res, { userModel }) => {
     });
   console.log('1', user);
 
-  if (!user.enabled) {
-    const settings = await loadSettings();
+  // if (!user.enabled) {
+  //   const settings = await loadSettings();
 
-    const idurar_app_email = settings['idurar_app_email'];
-    const idurar_base_url = settings['idurar_base_url'];
-    const url = checkAndCorrectURL(idurar_base_url);
+  //   const idurar_app_email = settings['idurar_app_email'];
+  //   const idurar_base_url = settings['idurar_base_url'];
+  //   const url = checkAndCorrectURL(idurar_base_url);
 
-    const link = url + '/verify/' + user._id + '/' + userPassword.emailToken;
+  //   const link = url + '/verify/' + user._id + '/' + userPassword.emailToken;
 
-    await sendMail({ email, name: user.name, link, idurar_app_email });
+  //   await sendMail({ email, name: user.name, link, idurar_app_email });
 
-    return res.status(403).json({
-      success: false,
-      result: null,
-      message: 'your email account is not verified , check your email inbox',
-    });
-  }
-  console.log(user);
+  //   return res.status(403).json({
+  //     success: false,
+  //     result: null,
+  //     message: 'your email account is not verified , check your email inbox',
+  //   });
+  // }
+  // console.log(user);
 
   const token = jwt.sign(
     {

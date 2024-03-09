@@ -79,11 +79,11 @@ const register = async (req, res, { userModel }) => {
     });
   }
 
-  const url = checkAndCorrectURL(idurar_base_url);
+  // const url = checkAndCorrectURL(idurar_base_url);
 
-  const link = url + '/verify/' + savedUser._id + '/' + emailToken;
+  // const link = url + '/verify/' + savedUser._id + '/' + emailToken;
 
-  await sendMail({ email, name, link, idurar_app_email });
+  // await sendMail({ email, name, link, idurar_app_email });
   // Email verification logic here
 
   return res.status(200).json({

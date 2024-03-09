@@ -4,7 +4,6 @@ function checkAndCorrectURL(url) {
 
   // Remove "http://" or "https://" if present
   url = url.replace(/^https?:\/\//i, '');
-
   // Remove trailing slashes
   url = url.replace(/\/+$/, '');
 
