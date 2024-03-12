@@ -7,7 +7,7 @@ const { ObjectId } = require('mongodb');
 const summary = async (req, res) => {
   let defaultType = 'month';
 
-  const { type, id } = req.query;
+  const { type , id } = req.query;
   const supplier = id ? new ObjectId(id) : null;
 
   if (type) {

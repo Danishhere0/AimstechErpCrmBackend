@@ -3,11 +3,23 @@ const mongoose = require('mongoose');
 const Model = mongoose.model('Invoice');
 
 const { calculate } = require('@/helpers');
-const { increaseBySettingKey } = require('@/middlewares/settings');
 const schema = require('./schemaValidate');
+
+const { generateUniqueNumber } = require('@/middlewares/inventory');
+const { loadSettings, increaseBySettingKey } = require('@/middlewares/settings');
 
 const create = async (req, res) => {
   let body = req.body;
+  // const settings = await loadSettings();
+
+  // const last_order_number = settings['last_invoice_number'];
+  // console.log('last_order_number', last_order_number);
+  const latestInvoice = await Model.findOne({ type: body.type }).sort({ _id: -1 }).lean();
+  // const latestInvoice = await Model.findOne({ _id: latestDocument._id });
+  console.log('latestInvoice', latestInvoice.number);
+
+  body.number = latestInvoice.number + 1;
+   console.log('body.number', body.number);
 
   const { error, value } = schema.validate(body);
   if (error) {
