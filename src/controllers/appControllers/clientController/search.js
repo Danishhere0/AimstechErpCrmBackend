@@ -20,8 +20,16 @@ const search = async (Model, req, res) => {
     fields.$or.push({ [field]: { $regex: new RegExp(req.query.q, 'i') } });
   }
   // console.log(fields)
-
-  let results = await Model.find(fields).where('removed', false).limit(10).exec();
+  let admin;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    admin = req.admin._id;
+  } else {
+    admin = req.admin.admin._id;
+  }
+  let results = await Model.find({ ...fields, admin })
+    .where('removed', false)
+    .limit(10)
+    .exec();
 
   const migratedData = results.map((x) => migrate(x));
 

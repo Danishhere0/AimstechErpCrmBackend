@@ -1,8 +1,14 @@
 const summary = async (Model, req, res) => {
   //  Query the database for a list of all results
-  const countPromise = Model.countDocuments({ removed: false });
+  let admin;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    admin = req.admin._id;
+  } else {
+    admin = req.admin.admin._id;
+  }
+  const countPromise = Model.countDocuments({ admin, removed: false });
 
-  const resultsPromise = await Model.countDocuments({ removed: false })
+  const resultsPromise = await Model.countDocuments({ admin, removed: false })
     .where(req.query.filter)
     .equals(req.query.equal)
     .exec();

@@ -5,6 +5,7 @@ const paymentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  admin: { type: mongoose.Schema.ObjectId, ref: 'Admin', autopopulate: true, required: true },
   branch: { type: mongoose.Schema.ObjectId, ref: 'Branch' },
   createdBy: { type: mongoose.Schema.ObjectId, ref: 'Admin', autopopulate: true, required: true },
   number: {
@@ -67,6 +68,7 @@ const paymentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  admin: { type: mongoose.Schema.ObjectId, ref: 'Admin', required: true },
 });
 paymentSchema.plugin(require('mongoose-autopopulate'));
 module.exports = mongoose.model('Payment', paymentSchema);

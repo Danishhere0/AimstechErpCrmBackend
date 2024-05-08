@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
+  admin: { type: mongoose.Schema.ObjectId, ref: 'Admin', required: true },
+
   removed: {
     type: Boolean,
     default: false,
@@ -211,6 +213,7 @@ const schema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  admin: { type: mongoose.Schema.ObjectId, ref: 'Admin', required: true, autopopulate: true },
 });
 
 schema.plugin(require('mongoose-autopopulate'));

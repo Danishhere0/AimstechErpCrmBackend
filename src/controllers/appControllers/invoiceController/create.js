@@ -10,6 +10,8 @@ const { loadSettings, increaseBySettingKey } = require('@/middlewares/settings')
 
 const create = async (req, res) => {
   let body = req.body;
+  const currentUserRole = req.admin._id;
+
   // const settings = await loadSettings();
 
   // const last_order_number = settings['last_invoice_number'];
@@ -19,7 +21,7 @@ const create = async (req, res) => {
   console.log('latestInvoice', latestInvoice.number);
 
   body.number = latestInvoice.number + 1;
-   console.log('body.number', body.number);
+  console.log('body.number', body.number);
 
   const { error, value } = schema.validate(body);
   if (error) {
@@ -58,6 +60,11 @@ const create = async (req, res) => {
 
   body['paymentStatus'] = paymentStatus;
   body['createdBy'] = req.admin._id;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    body['admin'] = req.admin._id;
+  } else {
+    body['admin'] = req.admin.admin._id;
+  }
   // Creating a new document in the collection
   const result = await new Model(body).save();
   const fileId = 'invoice-' + result._id + '.pdf';

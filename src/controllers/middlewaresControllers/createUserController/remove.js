@@ -6,7 +6,7 @@ const remove = async (userModel, req, res) => {
   // Find the document by id and delete it
   const user = await User.findOne({ _id: req.params.id, removed: false }).exec();
 
-  if (user.role === 'admin' || user.role === 'superadmin') {
+  if (!user.role === 'superadmin') {
     return res.status(403).json({
       success: false,
       result: null,

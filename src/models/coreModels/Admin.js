@@ -28,6 +28,9 @@ const adminSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+
+  admin: { type: mongoose.Schema.ObjectId, ref: 'Admin', required: true },
+
   role: {
     type: String,
     default: 'staff',

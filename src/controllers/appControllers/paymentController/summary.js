@@ -19,20 +19,58 @@ const summary = async (req, res) => {
       });
     }
   }
-
+  let admin;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    admin = req.admin._id;
+  } else {
+    admin = req.admin.admin._id;
+  }
   const currentDate = moment();
   let startDate = currentDate.clone().startOf(defaultType);
   let endDate = currentDate.clone().endOf(defaultType);
 
   // get total amount of invoices
-  const result = await Model.aggregate([
+  const saleResult = await Model.aggregate([
     {
       $match: {
+        admin,
         removed: false,
-        // date: {
-        //   $gte: startDate.toDate(),
-        //   $lte: endDate.toDate(),
-        // },
+        type: 'sale',
+        date: {
+          $gte: startDate.toDate(),
+          $lte: endDate.toDate(),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null, // Group all documents into a single group
+        count: {
+          $sum: 1,
+        },
+        total: {
+          $sum: '$amount',
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0, // Exclude _id from the result
+        count: 1,
+        total: 1,
+      },
+    },
+  ]);
+  const purchaseResult = await Model.aggregate([
+    {
+      $match: {
+        admin,
+        removed: false,
+        type: 'purchase',
+        date: {
+          $gte: startDate.toDate(),
+          $lte: endDate.toDate(),
+        },
       },
     },
     {
@@ -55,9 +93,12 @@ const summary = async (req, res) => {
     },
   ]);
 
+  console.log(purchaseResult, saleResult, 'chck', startDate.toDate(), endDate.toDate());
+  const sale = saleResult.length > 0 ? saleResult[0] : { count: 0, total: 0 };
+  const purchase = purchaseResult.length > 0 ? purchaseResult[0] : { count: 0, total: 0 };
   return res.status(200).json({
     success: true,
-    result: result.length > 0 ? result[0] : { count: 0, total: 0 },
+    result: { sale, purchase },
     message: `Successfully fetched the summary of payment invoices for the last ${defaultType}`,
   });
 };

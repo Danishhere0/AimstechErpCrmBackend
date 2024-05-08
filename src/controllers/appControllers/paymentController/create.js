@@ -15,7 +15,12 @@ const create = async (req, res) => {
       message: `The Minimum Amount couldn't be 0`,
     });
   }
-
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    req.body['admin'] = req.admin._id;
+    req.body['createdBy'] = req.admin._id;
+  } else {
+    req.body['admin'] = req.admin.admin._id;
+  }
   const currentInvoice = await Invoice.findOne({
     _id: req.body.invoice,
     removed: false,

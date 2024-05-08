@@ -33,10 +33,10 @@ const create = async (userModel, req, res) => {
   const salt = uniqueId();
 
   const passwordHash = newUserPassword.generateHash(salt, password);
-
   req.body.password = undefined;
   req.body.removed = false;
   req.body.enabled = true;
+  req.body.admin = req.admin._id;
   const result = await new User(req.body).save();
 
   if (!result) {

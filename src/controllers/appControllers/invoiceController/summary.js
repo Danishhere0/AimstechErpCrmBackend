@@ -7,7 +7,7 @@ const { ObjectId } = require('mongodb');
 const summary = async (req, res) => {
   let defaultType = 'month';
 
-  const { type , id } = req.query;
+  const { type, id } = req.query;
   const supplier = id ? new ObjectId(id) : null;
 
   if (type) {
@@ -21,12 +21,18 @@ const summary = async (req, res) => {
       });
     }
   }
-
+  let admin;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    admin = req.admin._id;
+  } else {
+    admin = req.admin.admin._id;
+  }
   const currentDate = moment();
   let startDate = currentDate.clone().startOf(defaultType);
   let endDate = currentDate.clone().endOf(defaultType);
 
   const statuses = ['draft', 'pending', 'overdue', 'paid', 'unpaid', 'partially'];
+  console.log('chck', startDate.toDate(), endDate.toDate());
 
   const response = await Model.aggregate([
     {
@@ -34,10 +40,11 @@ const summary = async (req, res) => {
         removed: false,
         type: 'purchase',
         ...(supplier ? { supplier } : {}),
-        // date: {
-        //   $gte: startDate.toDate(),
-        //   $lte: endDate.toDate(),
-        // },
+        admin,
+        date: {
+          $gte: startDate.toDate(),
+          $lte: endDate.toDate(),
+        },
       },
     },
     {
@@ -168,10 +175,11 @@ const summary = async (req, res) => {
         removed: false,
         type: 'purchase',
         ...(supplier ? { supplier } : {}),
-        // date: {
-        //   $gte: startDate.toDate(),
-        //   $lte: endDate.toDate(),
-        // },
+        admin,
+        date: {
+          $gte: startDate.toDate(),
+          $lte: endDate.toDate(),
+        },
         paymentStatus: {
           $in: ['unpaid', 'partially'],
         },
@@ -207,10 +215,13 @@ const summary = async (req, res) => {
       $match: {
         removed: false,
         type: 'sale',
-        // date: {
-        //   $gte: startDate.toDate(),
-        //   $lte: endDate.toDate(),
-        // },
+        admin,
+        ...(supplier ? { supplier } : {}),
+
+        date: {
+          $gte: startDate.toDate(),
+          $lte: endDate.toDate(),
+        },
       },
     },
     {
@@ -342,10 +353,12 @@ const summary = async (req, res) => {
       $match: {
         removed: false,
         type: 'sale',
-        // date: {
-        //   $gte: startDate.toDate(),
-        //   $lte: endDate.toDate(),
-        // },
+        admin,
+        ...(supplier ? { supplier } : {}),
+        date: {
+          $gte: startDate.toDate(),
+          $lte: endDate.toDate(),
+        },
         paymentStatus: {
           $in: ['unpaid', 'partially'],
         },

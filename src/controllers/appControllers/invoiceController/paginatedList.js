@@ -8,9 +8,14 @@ const paginatedList = async (req, res) => {
   const type = req.query.type;
 
   const skip = page * limit - limit;
-
+  let admin;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    admin = req.admin._id;
+  } else {
+    admin = req.admin.admin._id;
+  }
   //  Query the database for a list of all results
-  const resultsPromise = Model.find({ removed: false, type })
+  const resultsPromise = Model.find({ removed: false, type, admin })
     .skip(skip)
     .limit(limit)
     .sort({ created: 'desc' })

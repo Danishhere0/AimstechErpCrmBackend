@@ -36,6 +36,11 @@ const create = async (Model, req, res) => {
   }
 
   req.body.removed = false;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    body['admin'] = req.admin._id;
+  } else {
+    body['admin'] = req.admin.admin._id;
+  }
   const result = await new Model(req.body).save();
 
   // Returning successfull response

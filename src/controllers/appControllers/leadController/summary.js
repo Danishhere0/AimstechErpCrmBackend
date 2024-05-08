@@ -6,7 +6,12 @@ const QuoteModel = mongoose.model('Quote');
 const summary = async (Model, req, res) => {
   let defaultType = 'month';
   const { type } = req.query;
-
+  let admin;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    admin = req.admin._id;
+  } else {
+    admin = req.admin.admin._id;
+  }
   if (type && ['week', 'month', 'year'].includes(type)) {
     defaultType = type;
   } else if (type) {
@@ -29,6 +34,7 @@ const summary = async (Model, req, res) => {
             $match: {
               removed: false,
               enabled: true,
+              admin,
             },
           },
           {
@@ -41,6 +47,7 @@ const summary = async (Model, req, res) => {
               removed: false,
               created: { $gte: startDate.toDate(), $lte: endDate.toDate() },
               enabled: true,
+              admin,
             },
           },
           {
@@ -58,6 +65,8 @@ const summary = async (Model, req, res) => {
           },
           {
             $match: {
+              admin,
+
               'quotes.removed': false,
             },
           },

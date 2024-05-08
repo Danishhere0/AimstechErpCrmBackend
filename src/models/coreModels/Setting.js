@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const settingSchema = new mongoose.Schema({
+  branchs: [{ type: mongoose.Schema.ObjectId, ref: 'Branch' }],
+  admin: { type: mongoose.Schema.ObjectId, ref: 'Admin', required: true },
   removed: {
     type: Boolean,
     default: false,

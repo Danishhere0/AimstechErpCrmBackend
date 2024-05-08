@@ -21,7 +21,10 @@ const search = async (Model, req, res) => {
   }
   // console.log(fields)
 
-  let results = await Model.find(fields).where('removed', false).limit(10).exec();
+  let results = await Model.find({ ...fields, admin })
+    .where('removed', false)
+    .limit(10)
+    .exec();
 
   const migratedData = results.map((x) => migrate(x));
 

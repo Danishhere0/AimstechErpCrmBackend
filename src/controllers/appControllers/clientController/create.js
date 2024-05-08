@@ -74,7 +74,11 @@ const create = async (Model, req, res) => {
       req.body.people = undefined;
     }
   }
-
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    req.body.admin = req.admin._id;
+  } else {
+    req.body.admin = req.admin.admin._id;
+  }
   req.body.removed = false;
   const result = await new Model(req.body).save();
 

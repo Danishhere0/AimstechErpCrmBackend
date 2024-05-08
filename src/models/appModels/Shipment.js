@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const ShipmentSchema = new mongoose.Schema({
+  admin: { type: mongoose.Schema.ObjectId, ref: 'Admin', required: true },
+
   removed: {
     type: Boolean,
     default: false,

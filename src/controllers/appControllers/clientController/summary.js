@@ -16,7 +16,12 @@ const summary = async (Model, req, res) => {
       message: 'Invalid type',
     });
   }
-
+  let admin;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    admin = req.admin._id;
+  } else {
+    admin = req.admin.admin._id;
+  }
   const currentDate = moment();
   let startDate = currentDate.clone().startOf(defaultType);
   let endDate = currentDate.clone().endOf(defaultType);
@@ -27,6 +32,7 @@ const summary = async (Model, req, res) => {
         totalClients: [
           {
             $match: {
+              admin,
               removed: false,
               enabled: true,
             },
@@ -38,6 +44,7 @@ const summary = async (Model, req, res) => {
         newClients: [
           {
             $match: {
+              admin,
               removed: false,
               created: { $gte: startDate.toDate(), $lte: endDate.toDate() },
               enabled: true,
@@ -58,6 +65,7 @@ const summary = async (Model, req, res) => {
           },
           {
             $match: {
+              admin,
               'quotes.removed': false,
             },
           },
