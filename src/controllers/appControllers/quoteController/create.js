@@ -32,6 +32,12 @@ const create = async (req, res) => {
   body['taxTotal'] = taxTotal;
   body['total'] = total;
   body['items'] = items;
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    req.body['admin'] = req.admin._id;
+    req.body['createdBy'] = req.admin._id;
+  } else {
+    req.body['admin'] = req.admin.admin._id;
+  }
   body['createdBy'] = req.admin._id;
 
   // Creating a new document in the collection

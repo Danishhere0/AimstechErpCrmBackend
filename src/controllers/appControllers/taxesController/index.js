@@ -6,8 +6,14 @@ const methods = createCRUDController('Taxes');
 delete methods['delete'];
 
 methods.create = async (req, res) => {
-  const { isDefault } = req.body;
-
+  const { isDefault, admin } = req.body;
+  console.log(admin, 'admin');
+  if (req.admin.role == 'admin' || req.admin.role == 'superadmin') {
+    req.body['admin'] = req.admin._id;
+    // req.body['createdBy'] = req.admin._id;
+  } else {
+    req.body['admin'] = req.admin.admin._id;
+  }
   if (isDefault) {
     await Model.updateMany({}, { isDefault: false });
   }
